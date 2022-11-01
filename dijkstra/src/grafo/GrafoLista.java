@@ -126,9 +126,6 @@ public class GrafoLista extends Grafo {
 					this.predecesores[nodoAux.getId()] = w;
 				}
 			}
-			
-			System.out.println(w + " ");
-
 		}
 		return distancias;
 	}

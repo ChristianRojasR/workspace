@@ -1,8 +1,10 @@
 package grafo;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -11,6 +13,7 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 	// grafo implementado matriz de adyacencia con nodos no dirigidos
 	private double[][] grafo;
 	private int[] predecesores = null;
+	private int[] representantes = null;
 
 	public GrafoMatrizNoDirigidos(int tamanio) {
 
@@ -168,5 +171,29 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 		}
 
 		return lista;
+	}
+	
+	public int kruskal() {
+		int costo = 1;
+		
+		PriorityQueue<NodoKruskal> colaDeNodos = new PriorityQueue<NodoKruskal>(); 
+		
+		for (int i = 0; i < grafo.length; i++) {
+			for (int j = 0; j < grafo[i].length; j++) {
+				colaDeNodos.add(new NodoKruskal(i, j, this.grafo[i][j]));		
+			}
+		}
+		
+		Set<Integer> s = new HashSet<Integer>();
+		
+		
+		for (int i = 0; i < grafo.length; i++) {
+			s.add(i);
+		}
+		
+		
+		
+		
+		return costo;
 	}
 }
