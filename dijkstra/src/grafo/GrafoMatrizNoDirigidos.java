@@ -1,7 +1,6 @@
 package grafo;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -40,7 +39,7 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 		for (int i = 0; i < grafo.length; i++) {
 			for (int j = 0; j < grafo[i].length; j++) {
 				if (this.grafo[i][j] == 0)
-					this.grafo[i][j] = 100;
+					this.grafo[i][j] = Double.MAX_VALUE;
 			}
 		}
 	}
@@ -174,26 +173,87 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 	}
 	
 	public int kruskal() {
-		int costo = 1;
 		
-		PriorityQueue<NodoKruskal> colaDeNodos = new PriorityQueue<NodoKruskal>(); 
+		this.actualizarMatriz();
+		
+		// Ordenamos las aristas de menor a mayor y conservamos la informacion
+		PriorityQueue<AristaKruskal> colaDeAristas = new PriorityQueue<AristaKruskal>();
 		
 		for (int i = 0; i < grafo.length; i++) {
 			for (int j = 0; j < grafo[i].length; j++) {
-				colaDeNodos.add(new NodoKruskal(i, j, this.grafo[i][j]));		
+				if(this.grafo[i][j] != Double.MAX_VALUE)
+					colaDeAristas.add(new AristaKruskal(i, j, this.grafo[i][j]));		
 			}
 		}
 		
-		Set<Integer> s = new HashSet<Integer>();
+		//Emepzamos a unir los n nodos entre si
+		int costo = 0;
+		UnionFind unionFind = new UnionFind(grafo.length);
 		
-		
-		for (int i = 0; i < grafo.length; i++) {
-			s.add(i);
+		while(!colaDeAristas.isEmpty()) {
+			AristaKruskal aristaAux = colaDeAristas.poll();
+			System.out.println(aristaAux);
+			
+			if(unionFind.union(aristaAux.getDesde(), aristaAux.getHasta()))
+				costo += aristaAux.getCosto();
 		}
 		
-		
-		
+		// Obtengo el vector de representantes desde unionFind
+		representantes = unionFind.getId();
 		
 		return costo;
 	}
+
+	public int[] getRepresentantes() {
+		return representantes;
+	}
+	
+	public int[] welshPowel() {
+		
+		this.actualizarMatriz();
+		
+		// Creo la lista ordenada de nodos
+		PriorityQueue<NodoColoreo> cola = new PriorityQueue<NodoColoreo>();
+		
+		for (int i = 0; i < grafo.length; i++) {
+			int grado = 0;
+			
+			for (int j = 0; j < grafo[i].length; j++) {
+				if(grafo[i][j] != Double.MAX_VALUE)
+					grado ++;
+			}
+			cola.add(new NodoColoreo(i, grado));
+		}
+		
+		// Desacolo para ir buscando por fila en la matriz
+		int [] colores = new int [grafo.length];
+		
+		while(!cola.isEmpty()) {
+			//Inicio de nuevo el color para usar la menor cantidad de color posible
+			int color = 1; // Asigno un int distinto por color
+			
+			NodoColoreo nodoAux = cola.poll();
+			
+			if(colores[nodoAux.getId()] == 0) {
+				colores[nodoAux.getId()] = color++;
+				
+				// Reviso en la fila id
+				for (int i = 0; i < grafo[nodoAux.getId()].length; i++) {
+					if(grafo[nodoAux.getId()][i] != Double.MAX_VALUE) {
+						colores[i] = color++;
+					}
+				}
+				
+				// Reviso en la columna id
+				for (int i = nodoAux.getId() + 1; i < this.getNodos(); i++) {
+					if(grafo[i][nodoAux.getId()] != Double.MAX_VALUE) {
+						colores[i] = color++;
+					}
+				}
+			}
+		}
+		
+		return colores;
+	}
+	
 }

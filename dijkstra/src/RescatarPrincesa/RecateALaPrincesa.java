@@ -2,7 +2,6 @@ package RescatarPrincesa;
 
 import java.util.List;
 
-import grafo.GrafoLista;
 import grafo.GrafoMatrizNoDirigidos;
 
 public class RecateALaPrincesa {
