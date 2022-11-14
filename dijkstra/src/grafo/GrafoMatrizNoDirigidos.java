@@ -157,6 +157,7 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 
 		List<Integer> lista = new LinkedList<Integer>();
 		Stack<Integer> pila = new Stack<Integer>();
+		
 
 		pila.add(nodo);
 		while (this.predecesores[nodo] != desde) {
@@ -233,23 +234,24 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 			int color = 1; // Asigno un int distinto por color
 			
 			NodoColoreo nodoAux = cola.poll();
+			List<Integer> listaAdyacentes = new LinkedList<Integer>();
+			// Reviso en la fila id
+			for (int i = 0; i < grafo[nodoAux.getId()].length; i++) {
+				if(grafo[nodoAux.getId()][i] != Double.MAX_VALUE) {
+					listaAdyacentes.add(i);
+				}
+			}
 			
-			if(colores[nodoAux.getId()] == 0) {
-				colores[nodoAux.getId()] = color++;
-				
-				// Reviso en la fila id
-				for (int i = 0; i < grafo[nodoAux.getId()].length; i++) {
-					if(grafo[nodoAux.getId()][i] != Double.MAX_VALUE) {
-						colores[i] = color++;
-					}
-				}
-				
-				// Reviso en la columna id
-				for (int i = nodoAux.getId() + 1; i < this.getNodos(); i++) {
-					if(grafo[i][nodoAux.getId()] != Double.MAX_VALUE) {
-						colores[i] = color++;
-					}
-				}
+			PriorityQueue<Integer> coloresOrdenados = new PriorityQueue<Integer>();		
+			for (Integer integer : listaAdyacentes) {
+				coloresOrdenados.add(colores[integer]); 
+			}
+			
+			while(coloresOrdenados.isEmpty()) {
+				if(coloresOrdenados.poll() == color)
+					colores[nodoAux.getId()] = color;
+				else
+					color++;
 			}
 		}
 		
