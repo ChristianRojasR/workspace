@@ -1,8 +1,10 @@
 package grafo;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 public class GrafoMatriz extends Grafo{
 	
@@ -70,7 +72,7 @@ public class GrafoMatriz extends Grafo{
 		
 		while(!cola.isEmpty()) {
 			//Inicio de nuevo el color para usar la menor cantidad de color posible
-			int color = 1; // Asigno un int distinto por color
+			int color = 0; // Asigno un int distinto por color
 			
 			NodoColoreo nodoAux = cola.poll();
 			System.out.println(nodoAux);
@@ -87,24 +89,27 @@ public class GrafoMatriz extends Grafo{
 				coloresOrdenados.add(colores[integer]); 
 			}
 			
-			int band = 0;
-			while(!coloresOrdenados.isEmpty() && band == 0) {
+			boolean bandCont = false;
+			while(!coloresOrdenados.isEmpty() && !bandCont) {
 				int colorAux = coloresOrdenados.poll();
-				if(colorAux != color) {
+				if( colorAux != color) {
 					colores[nodoAux.getId()] = color;
-					band = 1;
+					bandCont = true; //necesito saber si ya asigno para cortar el ciclo
 				}else
 					color++;
 			}
+			if(!bandCont) //si lo corta porque ya no hay cola
+				colores[nodoAux.getId()] = color;
 		}
 		
-		int numCromatico =0;
+		Set<Integer> coloresSet = new HashSet<Integer>();
+		
 		for (int i = 0; i < colores.length; i++) {
-			if(colores[i] != 0)
-				numCromatico ++;
+			System.out.println(colores[i]);
+			coloresSet.add(colores[i]);
 		}
 		
-		return numCromatico;
+		return coloresSet.size();
 	}
 	
 

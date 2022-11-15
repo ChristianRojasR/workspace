@@ -6,7 +6,7 @@ public class AppColoreo {
 
 	public static void main(String[] args) {
 		
-		GrafoMatriz grafo = new GrafoMatriz(6);
+		GrafoMatriz grafo = new GrafoMatriz(7);
 		
 		grafo.setArista(0, 1, 1);
 		grafo.setArista(1, 3, 1);
