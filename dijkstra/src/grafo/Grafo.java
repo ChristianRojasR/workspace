@@ -10,5 +10,4 @@ public abstract class Grafo {
 	
 	public abstract double [] dijkstra (int desde);
 
-	
 }

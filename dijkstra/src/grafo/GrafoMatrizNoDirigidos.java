@@ -200,7 +200,7 @@ public class GrafoMatrizNoDirigidos extends Grafo {
 		}
 		
 		// Obtengo el vector de representantes desde unionFind
-		representantes = unionFind.getId();
+		//representantes = unionFind.getId();
 		
 		return costo;
 	}

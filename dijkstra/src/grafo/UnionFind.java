@@ -4,7 +4,7 @@ public class UnionFind {
 	
 	private int id [];
 
-	public UnionFind(int max) {
+	public UnionFind(int max) { // 1 2 3 3 5
 		id = new int [max];
 		
 		for (int i = 0; i < id.length; i++) {
